@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+</head>
+
+<body>
+
+<p align="center" class="my-5">
+  <a href="/home" class="btn btn-primary">
+    <i class="fas fa-user-plus ml-2"> Home </i></a>
+
+  <a href="/sql" class="btn btn-primary">
+    <i class="fas fa-user-plus ml-2"> Refresh </i></a>
+
+
+</p>
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${staffDtos}" class="container my-5">
+        <h3>a. Get details of all dentists in all the clinics.</h3>
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Dentist</th>
+                <th>Role</th>
+                <th>Clinic Name</th>
+                <th>Sex</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Contact No</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr th:each="staff : ${staffDtos}">
+                <td th:text="${staff.sid}"></td>
+                <td th:text="${staff.name}"></td>
+                <td th:text="${staff.role}"></td>
+                <td th:text="${staff.clinicName}"></td>
+                <td th:text="${staff.sex}"></td>
+                <td th:text="${staff.age}"></td>
+                <td th:text="${staff.email}"></td>
+                <td th:text="${staff.contactno}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${appointmentsDentist}" class="container my-5">
+
+        <h3>b. Get details of all appointments for a given dentist for a specific week.</h3>
+        <h5>default dentist=William and startDate=2020-04-01 and endDate=2020-04-03</h5>
+        <div class="col-md-10">
+          <form action="#" th:action="@{/searchAppointmentByDentist}" th:object="${appInputDentist}" method="post">
+            <div class="row">
+              <div class="form-group col-md-8">
+                <input type="text" th:field="*{dentistName}" class="form-control"
+                       id="dentistName" placeholder="Dentist Name"/>
+                <input type="text" th:field="*{startDate}" class="form-control"
+                       id="startDate" placeholder="Start Date"/>
+                <input type="text" th:field="*{endDate}" class="form-control"
+                       id="endDate" placeholder="End Date"/>
+              </div>
+
+              <div class="col-md-6">
+                <input type="submit" class="btn btn-primary" value=" Submit ">
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Appointment Date</th>
+                <th>Patient Name</th>
+                <th>Dentist Name</th>
+                <th>Clinic Name</th>
+                <th>Is Visit</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr th:each="appointment : ${appointmentsDentist}">
+                <td th:text="${appointment.aid}"></td>
+                <td th:text="${appointment.description}"></td>
+                <td th:text="${appointment.appointmentdate}"></td>
+                <td th:text="${appointment.patientName}"></td>
+                <td th:text="${appointment.dentistName}"></td>
+                <td th:text="${appointment.clinicName}"></td>
+                <td th:text="${appointment.isvisit}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${appointmentsClinic}" class="container my-5">
+
+        <h3>c. Get details of all appointments at a given clinic on a specific date.</h3>
+        <h5>default clinic=AMS Clinic and specific Date=2020-04-01</h5>
+        <div class="col-md-10">
+          <form action="#" th:action="@{/searchAppointmentByClinic}" th:object="${appInputClinic}" method="post">
+            <div class="row">
+              <div class="form-group col-md-8">
+                <input type="text" th:field="*{clinicName}" class="form-control"
+                       id="clinicName" placeholder="Clinic Name"/>
+                <input type="text" th:field="*{startDate}" class="form-control"
+                       id="startDate1" placeholder="Specific Date"/>
+              </div>
+
+              <div class="col-md-6">
+                <input type="submit" class="btn btn-primary" value=" Submit ">
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Appointment Date</th>
+                <th>Patient Name</th>
+                <th>Dentist Name</th>
+                <th>Clinic Name</th>
+                <th>Is Visit</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr th:each="appointment : ${appointmentsClinic}">
+                <td th:text="${appointment.aid}"></td>
+                <td th:text="${appointment.description}"></td>
+                <td th:text="${appointment.appointmentdate}"></td>
+                <td th:text="${appointment.patientName}"></td>
+                <td th:text="${appointment.dentistName}"></td>
+                <td th:text="${appointment.clinicName}"></td>
+                <td th:text="${appointment.isvisit}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${appointmentsPatient}" class="container my-5">
+
+        <h3>d. Get details of all appointments of a given patient.</h3>
+        <h5>default Patient Name = Marc</h5>
+        <div class="col-md-10">
+          <form action="#" th:action="@{/searchAppointmentByPatient}" th:object="${appInputPatient}" method="post">
+            <div class="row">
+              <div class="form-group col-md-8">
+                <input type="text" th:field="*{patientName}" class="form-control"
+                       id="patientName" placeholder="Patient Name"/>
+
+              </div>
+
+              <div class="col-md-6">
+                <input type="submit" class="btn btn-primary" value=" Submit ">
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Appointment Date</th>
+                <th>Patient Name</th>
+                <th>Dentist Name</th>
+                <th>Clinic Name</th>
+                <th>Is Visit</th>
+              </tr>
+              </thead>
+              <tbody>
+
+<!--              <tr th:each="appointment : ${appointmentsPatient}">-->
+              <tr th:each="appointment : ${appointmentsPatient}" th:style="${appointment.patientName} == ${searchPatientName} ? 'background: red' : 'background: white'">
+                <td th:text="${appointment.aid}"></td>
+                <td th:text="${appointment.description}"></td>
+                <td th:text="${appointment.appointmentdate}"></td>
+                <td th:text="${appointment.patientName}"></td>
+                <td th:text="${appointment.dentistName}"></td>
+                <td th:text="${appointment.clinicName}"></td>
+                <td th:text="${appointment.isvisit}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${missedAppointment}" class="container my-5">
+        <h3>e. Get the number of missed appointments for each patient(only for patients who have missed at least 1 appointment).</h3>
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr>
+                <th>Patient Id</th>
+                <th>Patient Name</th>
+                <th>Missed Appointment Count</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr th:each="appointment : ${missedAppointment}">
+                <td th:text="${appointment.pid}"></td>
+                <td th:text="${appointment.patientName}"></td>
+                <td th:text="${appointment.count}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${treatments}" class="container my-5">
+
+        <h3>f. Get details of all the treatments made during a given appointment.</h3>
+        <h5>default Appointment id = 1</h5>
+        <div class="col-md-10">
+          <form action="#" th:action="@{/searchTreatMentByAppId}" th:object="${treatmentInput}" method="post">
+            <div class="row">
+              <div class="form-group col-md-8">
+                <input type="text" th:field="*{aid}" class="form-control"
+                       id="aid" placeholder="Appointment Id"/>
+
+              </div>
+
+              <div class="col-md-6">
+                <input type="submit" class="btn btn-primary" value=" Submit ">
+              </div>
+
+            </div>
+          </form>
+        </div>
+
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr>
+                <th>Treatment ID</th>
+                <th>Treatment Name</th>
+                <th>Appointment Id</th>
+                <th>Cost</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr th:each="treatment : ${treatments}">
+                <td th:text="${treatment.tid}"></td>
+                <td th:text="${treatment.name}"></td>
+                <td th:text="${treatment.aid}"></td>
+                <td th:text="${treatment.cost}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${unpaidBills}" class="container my-5">
+        <h3>g. Get details of all unpaid bills.</h3>
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr>
+                <th>Bill Id</th>
+                <th>Appointment Id</th>
+                <th>Total Amount</th>
+                <th>Is Paid</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr th:each="unpaidBill : ${unpaidBills}">
+                <td th:text="${unpaidBill.bid}"></td>
+                <td th:text="${unpaidBill.aid}"></td>
+                <td th:text="${unpaidBill.totalamount}"></td>
+                <td th:text="${unpaidBill.ispaid}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>All Patients</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+</head>
+
+<body>
+
+<h2 align="center">Welcome to Dental Clinics !!</h2>
+
+<p align="center" class="my-5">
+    <a href="/sql" class="btn btn-primary">
+        <i class="fas fa-user-plus ml-2"> SQL </i></a>
+
+    <a href="/dba" class="btn btn-primary">
+        <i class="fas fa-user-plus ml-2"> DBA </i></a>
+
+    <a href="/erdiagram" class="btn btn-primary">
+        <i class="fas fa-user-plus ml-2"> ER-DIAGRAM </i></a>
+
+    <a href="/home" class="btn btn-primary">
+        <i class="fas fa-user-plus ml-2"> Refresh </i></a>
+
+</p>
+    <div class="container my-2">
+    <div class="card">
+    <div class="card-body">
+        <div th:switch="${patients}" class="container my-5">
+            <p class="my-5">
+                <a href="/editPatient" class="btn btn-primary">
+                <i class="fas fa-user-plus ml-2"> Add Patient </i></a>
+            </p>
+            <h3>All Patients</h3>
+            <div class="col-md-15">
+                <h2 th:case="null">No record found !!</h2>
+                <div th:case="*">
+                    <table class="table table-striped table-responsive-md">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Name</th>
+                                <th>Sex</th>
+                                <th>Age</th>
+                                <th>Address</th>
+                                <th>Email</th>
+                                <th>Contact No</th>
+                                <th>Edit</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr th:each="patient : ${patients}">
+                                <td th:text="${patient.pid}"></td>
+                                <td th:text="${patient.name}"></td>
+                                <td th:text="${patient.sex}"></td>
+                                <td th:text="${patient.age}"></td>
+                                <td th:text="${patient.address}"></td>
+                                <td th:text="${patient.email}"></td>
+                                <td th:text="${patient.contactno}"></td>
+                                <td>
+                                    <a th:href="@{/editPatient/{id}(id=${patient.pid})}" class="btn btn-primary">
+                                        <i class="fas fa-user-edit ml-2"></i>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a th:href="@{/deletePatient/{id}(id=${patient.pid})}" class="btn btn-primary">
+                                        <i class="fas fa-user-times ml-2"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="container my-2">
+        <div class="card">
+            <div class="card-body">
+                <div th:switch="${appointments}" class="container my-5">
+                    <p class="my-5">
+                        <a href="/editAppointment" class="btn btn-primary">
+                            <i class="fas fa-user-plus ml-2"> Add Appointment </i></a>
+                    </p>
+                    <h3>All Appointments</h3>
+                    <div class="col-md-15">
+                        <h2 th:case="null">No record found !!</h2>
+                        <div th:case="*">
+                            <table class="table table-striped table-responsive-md">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Description</th>
+                                    <th>Appointment Date</th>
+                                    <th>Patient Name</th>
+                                    <th>Dentist Name</th>
+                                    <th>Clinic Name</th>
+                                    <th>Is Visit</th>
+                                    <th>Edit</th>
+                                    <th>Delete</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                <tr th:each="appointment : ${appointments}">
+                                    <td th:text="${appointment.aid}"></td>
+                                    <td th:text="${appointment.description}"></td>
+                                    <td th:text="${appointment.appointmentdate}"></td>
+                                    <td th:text="${appointment.patientName}"></td>
+                                    <td th:text="${appointment.dentistName}"></td>
+                                    <td th:text="${appointment.clinicName}"></td>
+                                    <td th:text="${appointment.isvisit}"></td>
+                                    <td>
+                                        <a th:href="@{/editAppointment/{id}(id=${appointment.aid})}" class="btn btn-primary">
+                                            <i class="fas fa-user-edit ml-2"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{/deleteAppointment/{id}(id=${appointment.aid})}" class="btn btn-primary">
+                                            <i class="fas fa-user-times ml-2"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>

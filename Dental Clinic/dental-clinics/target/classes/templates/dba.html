@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css">
+</head>
+
+<body>
+
+<p align="center" class="my-5">
+  <a href="/home" class="btn btn-primary">
+    <i class="fas fa-user-plus ml-2"> Home </i></a>
+
+  <a href="/dba" class="btn btn-primary">
+    <i class="fas fa-user-plus ml-2"> Refresh </i></a>
+
+
+</p>
+
+<div class="container my-2">
+  <form action="#" th:action="@{/fireQuery}" th:object="${input}" method="post">
+    <div class="row">
+      <div class="form-group col-md-8">
+        <input type="text" th:field="*{inputquery}" class="form-control"
+               id="inputquery" placeholder="Write your Query here.!"/>
+
+        <label class="col-form-label">Example :</label></br>
+        <label class="col-form-label">Table Name in Database : patient(pid,name,sex,age,address,email,contactno), clinic(cid,name,address), staff(sid,name,role,cid,sex,age,email,contactno), appointment(aid,description,appointmentdate,pid,sid,cidisvisit), treatment(tid,name,aid,cost), bill(bid,aid,totalamount,ispaid)</label></br>
+        <label class="col-form-label">Example : select * from clinic;</label></br>
+        <label class="col-form-label">Example : select * from staff;</label></br>
+        <label class="col-form-label">Example : SELECT a.aid,a.description,a.appointmentdate,a.pid,a.sid,a.cid,a.isvisit,p.name,s.name,c.name FROM appointment a, patient p, staff s, clinic c where a.pid=p.pid and a.sid=s.sid and a.cid=c.cid and
+          a.sid in (select sid from staff where s.name = 'William');</label></br>
+        <label class="col-form-label">Example : SELECT a.aid,a.description,a.appointmentdate,a.pid,a.sid,a.cid,a.isvisit,p.name,s.name,c.name FROM appointment a, patient p, staff s, clinic c where a.pid=p.pid and a.sid=s.sid and a.cid=c.cid and
+          a.cid in (select cid from clinic where name = 'AMS Clinic') and appointmentdate= '2020-04-01';</label></br>
+        <label class="col-form-label">Example : update patient set name = 'Marc123' where pid = 1;</label></br>
+        <label class="col-form-label">Example : delete from bill where bid = 1;</label></br>
+      </div>
+
+      <div class="col-md-6">
+        <input type="submit" class="btn btn-primary" value=" Submit ">
+      </div>
+
+    </div>
+  </form>
+
+</div>
+
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${rows}" class="container my-5">
+        <h3>Select query Result below :</h3>
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr class="headings">
+                <th th:each="header: ${headers}" class="column-title" th:text="${header}" />
+              </tr>
+              </thead>
+              <tbody>
+
+
+              <tr class="even pointer" th:each="row: ${rows}" id="tablerow">
+                <td th:each="header: ${headers}" th:text="${row.get(header)}" />
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${patients}" class="container my-5">
+        <h3>Patient Table</h3>
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Sex</th>
+                <th>Age</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th>Contact No</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr th:each="patient : ${patients}">
+                <td th:text="${patient.pid}"></td>
+                <td th:text="${patient.name}"></td>
+                <td th:text="${patient.sex}"></td>
+                <td th:text="${patient.age}"></td>
+                <td th:text="${patient.address}"></td>
+                <td th:text="${patient.email}"></td>
+                <td th:text="${patient.contactno}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${clinics}" class="container my-5">
+        <h3>Clinic Table</h3>
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Address</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr th:each="clinic : ${clinics}">
+                <td th:text="${clinic.cid}"></td>
+                <td th:text="${clinic.name}"></td>
+                <td th:text="${clinic.address}"></td>
+
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${staffs}" class="container my-5">
+        <h3>Staff Table</h3>
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Role</th>
+                <th>Clinic Id</th>
+                <th>Sex</th>
+                <th>Age</th>
+                <th>Email</th>
+                <th>Contact No</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr th:each="staff : ${staffs}">
+                <td th:text="${staff.sid}"></td>
+                <td th:text="${staff.name}"></td>
+                <td th:text="${staff.role}"></td>
+                <td th:text="${staff.cid}"></td>
+                <td th:text="${staff.sex}"></td>
+                <td th:text="${staff.age}"></td>
+                <td th:text="${staff.email}"></td>
+                <td th:text="${staff.contactno}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${appointments}" class="container my-5">
+        <h3>Appointment Table</h3>
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Description</th>
+                <th>Date</th>
+                <th>Patient ID</th>
+                <th>Staff Id</th>
+                <th>Clinic Id</th>
+                <th>Is visit</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr th:each="appointment : ${appointments}">
+                <td th:text="${appointment.aid}"></td>
+                <td th:text="${appointment.description}"></td>
+                <td th:text="${appointment.appointmentdate}"></td>
+                <td th:text="${appointment.pid}"></td>
+                <td th:text="${appointment.sid}"></td>
+                <td th:text="${appointment.cid}"></td>
+                <td th:text="${appointment.isvisit}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${treatments}" class="container my-5">
+        <h3>Treatment Table</h3>
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Appointment Id</th>
+                <th>Cost</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr th:each="treatment : ${treatments}">
+                <td th:text="${treatment.tid}"></td>
+                <td th:text="${treatment.name}"></td>
+                <td th:text="${treatment.aid}"></td>
+                <td th:text="${treatment.cost}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="container my-2">
+  <div class="card">
+    <div class="card-body">
+      <div th:switch="${bills}" class="container my-5">
+        <h3>Bill Table</h3>
+        <div class="col-md-15">
+          <h2 th:case="null">No record found !!</h2>
+          <div th:case="*">
+            <table class="table table-striped table-responsive-md">
+              <thead>
+              <tr>
+                <th>ID</th>
+                <th>Appointment Id</th>
+                <th>Total Amount</th>
+                <th>Is Paid</th>
+              </tr>
+              </thead>
+              <tbody>
+
+              <tr th:each="bill : ${bills}">
+                <td th:text="${bill.bid}"></td>
+                <td th:text="${bill.aid}"></td>
+                <td th:text="${bill.totalamount}"></td>
+                <td th:text="${bill.ispaid}"></td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+</body>
+
+</html>
